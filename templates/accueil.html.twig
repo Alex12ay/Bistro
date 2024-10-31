@@ -67,7 +67,7 @@
                 <a href="/recettes/{{ recette.id }}"><h3>{{ recette.nom }}</h3></a>
                 {% set note = averageNotes[recette.id] is defined ? averageNotes[recette.id] : 0 %}
                 {% if note == 0 %}
-                    <p>0</p>
+                    <p>Pas de note encore</p>
                 {% else %}
                     <p>{{note}}</p>
                 {% endif %}  
