@@ -2,15 +2,18 @@
 
 {% block body %}
 
-    <h1 class="text-center">{{ingredientName}}</h1>
+    <h1 class="text-center" style="text-transform:capitalize">{{ingredientName}}</h1>
     <div class="d-flex flex-wrap justify-content-center">
     {% for recette in targetRecette %}
-            <div class="card p-2 m-2 w-25 align-center">
-            <img src="{{ recette.image }}" alt="{{ recette.nom }}">
-            <a href="/recettes/{{ recette.id }}"><h3 style="overflow:hidden; height:4em">{{ recette.nom }}</h3></a>
-            <p>{{ averageNotes[recette.id]|number_format(1) }}</p>  
+          <div class="card p-2 m-2 w-25 align-center" style="min-width:9em; max-width:17em; max-height:27em">
+                <img src="\uploads\{{ recette.image }}" alt="{{ recette.nom }}"style="width:100%; height: 50%">
+                <a href="/recettes/{{ recette.id }}"><h3>{{ recette.nom }}</h3></a>
+                {% set note = averageNotes[recette.id] is defined ? averageNotes[recette.id] : 0 %}
+                {% if note == 0 %}
+                    <p>Pas de note encore</p>
+                {% else %}
+                    <p>{{note}}</p> 
              <span class="toques-container">
-                {% set note = averageNotes[recette.id] %}
                     {% for i in 1..5 %}
                         {% if i <= note %}
                             <!-- Afficher la toque pleine -->
@@ -27,10 +30,10 @@
                             <svg class="toque-svg" viewBox="0 0 132.29167 132.29167" xmlns="http://www.w3.org/2000/svg"><path
                                     style="fill:none;fill-opacity:1;stroke:#333333;stroke-width:4.98493;stroke-dasharray:none;stroke-opacity:1"
                                     d="m 41.941905,70.665874 1.759856,30.377296 h 41.943187 l 2.053163,-31.326583 c 0,0 19.850129,-1.848611 16.425309,-20.567965 C 101.35693,34.02761 80.248393,36.046995 80.248393,36.046995 c 0,0 -1.601431,-15.210224 -14.508909,-15.796617 -11.723586,-0.532609 -16.171546,15.29175 -16.171546,15.29175 0,0 -23.825908,-2.910225 -24.051336,15.505074 -0.197572,16.139636 16.425303,19.618672 16.425303,19.618672 z"/></g></svg>
-
                         {% endif %}
                     {% endfor %}
             </span>
+            {% endif %}
         </div>
         {% endfor %} 
         </div>

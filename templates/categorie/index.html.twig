@@ -6,9 +6,9 @@
         <div class="mt-5 d-flex justify-content-center flex-wrap">
         {% for cat in categorie %}
             {% if cat.nom == 'Saison' %}
-                <a href="saison/" ><div class="m-2 text-center"><i class="{{cat.thumbnail}}"></i><p>{{cat.nom}}</p></div></a>
+                <a href="saison/" ><div class="m-2 text-center"style="text-transform:capitalize"><i class="{{cat.thumbnail}}"></i><p>{{cat.nom}}</p></div></a>
             {% else %}
-                <a href="categorie/{{cat.id}}"><div class="m-2 text-center"><i class="{{cat.thumbnail}}"></i><p>{{cat.nom}}</p></div></a>
+                <a href="categorie/{{cat.id}}"><div class="m-2 text-center" style="text-transform:capitalize"><i class="{{cat.thumbnail}}"></i><p>{{cat.nom}}</p></div></a>
             {% endif %} 
         {% endfor %}
         </div>

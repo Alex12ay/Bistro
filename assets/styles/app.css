@@ -1,8 +1,4 @@
 body {
-
-    
-
-
     background-color: black;
     display: flex;
     flex-direction: column;
@@ -10,6 +6,15 @@ body {
     margin: 0;
 }
 
+h3{
+    overflow:hidden; 
+    height:3.5em; 
+    text-transform:capitalize; 
+    margin-top:2%;
+}
+img{
+    border-radius: 5px;
+}
 
 main {
     flex: 1;
@@ -38,7 +43,6 @@ body a:hover {
     background-color: yellow;
 }
 
-
 h2 {
     margin-top: 2em;
 }
@@ -47,6 +51,48 @@ h2 {
     width: 30px;
     height: 30px;
 }
+
+.fa-heart{
+    width: 2em;
+}
+
+.buttonA{
+    background-color: #cf4727;
+    border: solid 1px #cf4727;
+    border-radius: 5px;
+    color: white;
+    padding: 1em 2em;
+    margin: 1em;
+}
+
+.buttonA:hover{
+    background-color: white;
+    color: #cf4727;
+    border: solid 1px #cf4727;
+    padding: 1em 2em;
+    margin: 1em;
+    border-radius: 5px;
+}
+
+.buttonB{
+    border: solid 1px #cf4727;
+    color: #cf4727;
+    padding: 1em 2em;
+    margin: 1em;
+}
+
+.buttonB:hover{
+    border: solid 1px #333333;
+    background-color: #d8d8da;
+    color: #333333;
+    padding: 1em 2em;
+    margin: 1em;
+}
+
+.bold {
+    font-weight: bold;
+}
+
 /******************************************************************/
 /**                        SHOW INGREDIENT                       **/
 /******************************************************************/
@@ -83,9 +129,6 @@ h2 {
     padding-right: 5%;
     
 }
-
-
-
 
 /******************************************************************/
 /**                           FOOTER                             **/
@@ -133,6 +176,14 @@ footer p {
 .center {
     display: flex;
     justify-content: center;
+}
+
+.footer-logo {
+    transition: fill 0.1s ease;
+}
+
+.footer-logo:hover {
+    fill: #cf4727;
 }
 
 /******************************************************************/

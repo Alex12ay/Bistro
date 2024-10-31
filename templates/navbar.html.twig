@@ -15,7 +15,7 @@
             </svg></a>
 
             <form role="search" id="searchNavbar">
-                <input class="form-control mt-4" type="search" placeholder="Search" aria-label="Search">
+                <input class="form-control mt-4" type="search" placeholder="Recherche" aria-label="Search">
             </form>
         </div>
 
@@ -27,6 +27,7 @@
 
                 <div class="d-flex">
                     <a href="/profil"><p class="m-0 pe-3" style="color:black">{{app.user.pseudo}}</p></a>
+                    <a href=/profil/#favoris"><i class="fa-regular fa-heart"></i></a>
                     <a href="/logout"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="30" fill="black" class="bi bi-x-lg" viewBox="0 0 16 16">
                     <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
                     </svg></a>
@@ -50,7 +51,7 @@
                         {% if category.nom == 'Saison' %}
                         {% else %}
                         <div>
-                            <a href="/categorie/{{category.id}}" ><p class="me-5">{{category.nom}}</p></a>
+                            <a href="/categorie/{{category.id}}" ><p class="me-5" style="text-transform:capitalize">{{category.nom}}</p></a>
                         </div>                       
                         {% endif %}
                     {% endfor %}

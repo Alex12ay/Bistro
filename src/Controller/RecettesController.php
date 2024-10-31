@@ -18,11 +18,18 @@ use App\Repository\IngredientRepository;
 use App\Repository\SaisonRepository;
 use App\Repository\UserRepository;
 use App\Repository\UstensileRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class RecettesController extends AbstractController
 {
@@ -277,16 +284,36 @@ class RecettesController extends AbstractController
     }
 
         #[Route('add/recettes', name: 'app_recettes_new')]
-        public function new(Request $request, EntityManagerInterface $em): Response
+        public function new(Request $request, EntityManagerInterface $em, SluggerInterface $slugger,#[Autowire('%kernel.project_dir%/public/uploads/')] string $uploadDirectory): Response
         {
            
             $recette = new Recette();
             $form = $this->createForm(AddRecettesType::class, $recette);
             $form->handleRequest($request);
+            $user = $this->getUser();
+
     
             // Vérifier si le formulaire est soumis et valide
             if ($form->isSubmitted() && $form->isValid()) {
-                // Enregistrer la recette dans la base de données
+                 /** @var UploadedFile */
+                $image = $form->get('image')->getData();
+                if($image){
+                    $originalFileName = pathinfo($image->getClientOriginalName(),PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFileName);
+                    $newFileName = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
+
+                    try{
+                        $image->move($uploadDirectory, $newFileName);
+                    }catch(FileException $e){
+
+                    }
+                    $recette->setImage($newFileName);
+                }
+
+
+                $recette = $form ->getData();
+                $recette ->setidUser($user);
+                $recette ->setDate(new DateTimeImmutable('today'));
                 $em->persist($recette);
                 $em->flush();
     
@@ -317,7 +344,7 @@ class RecettesController extends AbstractController
             $count = count($commentaires);
 
             foreach ($commentaires as $commentaire) {
-                $totalNotes += (float)$commentaire->getNote();
+                $totalNotes += $commentaire->getNote();
             }
 
             $averageNotes[$recette->getId()] = $count > 0 ? $totalNotes / $count : null;

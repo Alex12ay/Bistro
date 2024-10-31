@@ -8,12 +8,15 @@
     <div class="d-flex flex-wrap justify-content-center">
         {% for recettes in recette %}
             {% if (recettes.saison.id == targetSaison.id) %}
-               <div class="card p-2 m-2 w-25 align-center">
-                    <img src="{{ recettes.image }}" alt="{{ recettes.nom }}">
-                    <a href="/recettes/{{ recettes.id }}"><h3 style="overflow:hidden; height:4em">{{ recettes.nom }}</h3></a>
-                    <p>{{ averageNotes[recettes.id]|number_format(1) }}</p>  
+          <div class="card p-2 m-2 w-25 align-center" style="min-width:9em; max-width:17em; max-height:27em">
+                <img src="\uploads\{{ recettes.image }}" alt="{{ recettes.nom }}"style="width:100%; height: 50%">
+                <a href="/recettes/{{ recettes.id }}"><h3>{{ recettes.nom }}</h3></a>
+                {% set note = averageNotes[recettes.id] is defined ? averageNotes[recettes.id] : 0 %}
+                {% if note == 0 %}
+                    <p>Pas de note encore</p>
+                {% else %}
+                    <p>{{note}}</p>
                     <span class="toques-container">
-                    {% set note = averageNotes[recettes.id] %}
                     {% for i in 1..5 %}
                         {% if i <= note %}
                             <!-- Afficher la toque pleine -->
@@ -33,6 +36,7 @@
                         {% endif %}
                     {% endfor %}
                 </span>
+                {% endif %}
             </div>
             {% endif %}
             {% endfor %}

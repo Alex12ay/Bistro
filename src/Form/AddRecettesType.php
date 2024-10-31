@@ -13,6 +13,7 @@ use App\Entity\User;
 use App\Entity\Ustensile;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,16 +23,12 @@ class AddRecettesType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('image')
+            ->add('image', FileType::class,[
+                'mapped' => false,
+            ])
             ->add('temps')
             ->add('description')
-            ->add('date', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('idUser', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'pseudo',
-            ])
+                  
             ->add('ustensile', EntityType::class, [
                 'class' => Ustensile::class,
                 'choice_label' => 'nom',

@@ -32,7 +32,7 @@
     <div class="container">
         <div class="d-flex gap-2">
             <h1>{{ recette.nom }}</h1>
-            <div class="favoris">
+            <div class="favoris align-self-center ms-2">
                 <a href="{{ path('ajout_favori', {'id': recette.id}) }}">
                 {% if isFavorite %}
                     <i class="fas fa-star" id="etoile" style="color: black;"></i>
@@ -78,7 +78,7 @@
             </div>
 
             
-            <img src="{{ recette.image }}" alt="" class="width100">
+            <img src="\uploads\{{recette.image }}" alt="" class="width100">
             <div><small>Contributeur : {{ recette.idUser.pseudo }}</small></div>
 
             <div class="d-flex p-2 gap-3">
@@ -104,6 +104,7 @@
                 <h2>Ustensiles utilisés</h2>
                 {% for ustensile in ustensiles %}
                     <tr>
+                        <td><img src="\{{ustensile.image}}" class="ingredient-image" alt="image de {{ustensile.nom }}"></img></td>                        
                         <td>{{ ustensile.nom }}</td><td> | </td>
                     </tr>
                 {% endfor %}

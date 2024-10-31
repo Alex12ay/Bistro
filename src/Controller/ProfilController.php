@@ -2,10 +2,8 @@
 
 namespace App\Controller;
 
-use App\Repository\BudgetRepository;
-use App\Repository\IngredientRepository;
-use App\Repository\SaisonRepository;
-use App\Repository\CategorieRepository;
+use App\Repository\FavorisRepository;
+use App\Repository\RecetteRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,21 +11,23 @@ use Symfony\Component\Routing\Attribute\Route;
 class ProfilController extends AbstractController
 {
     #[Route('/profil', name: 'app_profil')]
-
-    public function index(CategorieRepository $cr, IngredientRepository $ing, SaisonRepository $sr, BudgetRepository $br): Response
+    public function index(RecetteRepository $rr, FavorisRepository $fr): Response
     {
-        $saison = $sr->findAll();
-        $budget = $br->findAll();
-        $ingredient = $ing->findAll();
-        $categorie = $cr->findAll();
-        $users = $this->getUser();
+        $user = $this->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException('Vous devez être connecté pour visualiser votre profil.');
+        }
+        
+        // Récupérer les recettes ajoutées par l'utilisateur
+        $recettesAjoutees = $rr->findBy(['idUser' => $user]);
+        
+        // Récupérer les favoris de l'utilisateur
+        $favoris = $fr->findBy(['idUser' => $user]);
+        
         return $this->render('profil/index.html.twig', [
-            'controller_name' => 'ProfilController',
-            'categorie' => $categorie,
-            'saison' => $saison,
-            'budget' => $budget,
-            'ingredient' => $ingredient,
-            'users' => $users,
+            'user' => $user,
+            'recettesAjoutees' => $recettesAjoutees,
+            'favoris' => $favoris,
         ]);
     }
 }
