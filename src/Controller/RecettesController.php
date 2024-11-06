@@ -4,17 +4,21 @@ namespace App\Controller;
 
 use App\Entity\Commentaire;
 use App\Entity\Favoris;
+use App\Entity\Quantite;
 use App\Entity\Recette;
 use App\Entity\User;
 use App\Form\AddRecettesType;
 use App\Form\CommentaireType;
+use App\Form\QuantiteType;
 use App\Repository\CategorieRepository;
 use App\Repository\CommentaireRepository;
 use App\Repository\RecetteRepository;
 use App\Repository\BudgetRepository;
 use App\Repository\DifficulteRepository;
+use App\Repository\EtapesRepository;
 use App\Repository\FavorisRepository;
 use App\Repository\IngredientRepository;
+use App\Repository\QuantiteRepository;
 use App\Repository\SaisonRepository;
 use App\Repository\UserRepository;
 use App\Repository\UstensileRepository;
@@ -180,7 +184,7 @@ class RecettesController extends AbstractController
     }
 
     #[Route('/recettes/{id}', name: 'app_recettes_show')]
-    public function show(UserRepository $user, RecetteRepository $rr, CommentaireRepository $cor, CategorieRepository $cr, IngredientRepository $ing, SaisonRepository $sr, BudgetRepository $br, DifficulteRepository $dr, UstensileRepository $ur, FavorisRepository $fav, Request $request, EntityManagerInterface $entityManager, $id): Response
+    public function show(UserRepository $user, RecetteRepository $rr,QuantiteRepository $qr, CommentaireRepository $cor, CategorieRepository $cr, IngredientRepository $ing, SaisonRepository $sr, BudgetRepository $br, DifficulteRepository $dr, UstensileRepository $ur, FavorisRepository $fav, Request $request, EtapesRepository $etapesRepository, EntityManagerInterface $entityManager, $id): Response
     { 
         $oneRec = $rr->find($id);
             if (!$oneRec) {
@@ -194,6 +198,8 @@ class RecettesController extends AbstractController
         $difficulte = $dr->findAll();
         $ustensile = $ur->findAll();
         $user = $this->getUser();
+        $etapes = $etapesRepository->findAll();
+       
 
         // Vérifier si la recette est dans les favoris de l'utilisateur
                 
@@ -223,9 +229,11 @@ class RecettesController extends AbstractController
         ->getQuery()
         ->getResult();
 
+        
+        
         // Récupérer tous les ingredients pour cette recette
-        $ingredients = $oneRec->getIngredient();
-
+        $ingredients = $oneRec->getQuantites();
+        
         // Récupérer tous les ustensiles pour cette recette
         $ustensiles = $oneRec->getUstensile();
 
@@ -245,6 +253,7 @@ class RecettesController extends AbstractController
         }
         $averageNote = $count > 0 ? $totalNotes / $count : null;
 
+
         // Insérer un nouveau commentaire pour cette recette
         $newCommentaire = new Commentaire();
         $newCommentaire->setRecette($oneRec);
@@ -261,6 +270,7 @@ class RecettesController extends AbstractController
         }
 
         return $this->render('recettes/show.html.twig', [
+            'etapes' => $etapes,
             'recette' => $oneRec,
             'isFavorite' => $isFavorite,
             'idUser' => $user,
@@ -278,6 +288,7 @@ class RecettesController extends AbstractController
             'commentaires' => $commentaires,
             'ingredients' => $ingredients,
             'ustensiles' => $ustensiles,
+            'ingredients' => $ingredients,
             'ustensile' => $ustensile,
             'commentaire' => $form->createView(),
         ]);
@@ -318,7 +329,7 @@ class RecettesController extends AbstractController
                 $em->flush();
     
                 // Rediriger vers la liste des recettes
-                return $this->redirectToRoute('app_recettes');
+                return $this->redirectToRoute('app_recette_add.');
             }
     
             // Afficher le formulaire
@@ -326,6 +337,31 @@ class RecettesController extends AbstractController
                 'form' => $form->createView(),
             ]);
         }
+
+        #[Route('/add/recettes.', name: 'app_recette_add.')]
+        public function newQ(Request $request,RecetteRepository $rr,EntityManagerInterface $em,): Response
+        {
+            $newQ = new Quantite();
+            $formulaire = $this->createForm(QuantiteType::class, $newQ);
+            $formulaire->handleRequest($request);
+            $recette = $rr->findOneBy([], ['id' => 'DESC']);
+            $ingredient = $recette -> getQuantites();
+
+            if ($formulaire->isSubmitted() && $formulaire->isValid()) {
+                $newQ = $formulaire ->getData();
+                $newQ -> setRecette($recette);
+                $em->persist($newQ);
+                $em->flush();
+                
+                return $this->redirectToRoute('app_recette_add.');
+
+                }
+                return $this->render('recettes/ingredientRecette.html.twig', [
+                    'formulaire' => $formulaire->createView(),
+                    'ingredient' => $ingredient,
+                ]);
+        }
+
 
     #[Route('/', name: 'app_accueil')]
     public function accueil(CategorieRepository $cr,CommentaireRepository $cor, IngredientRepository $ing,RecetteRepository $rr, SaisonRepository $sr, BudgetRepository $br): Response

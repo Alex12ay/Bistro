@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RecetteController!{% endblock %}
+
+{% block body %}
+{{ form(formulaire)}}
+{% for ing in ingredient %}
+    <div>
+        {{ing.quantite}}
+        {{ing.unite.nom}}
+        {{ing.ingredient.nom}}<br>
+    </div>
+    {% endfor %}
+{% endblock %}

@@ -22,17 +22,18 @@ class Ingredient
     private ?string $thumbnail = null;
 
     /**
-     * @var Collection<int, Recette>
+     * @var Collection<int, Quantite>
      */
-    #[ORM\ManyToMany(targetEntity: Recette::class, mappedBy: 'ingredient')]
-    private Collection $recettes;
+    #[ORM\OneToMany(targetEntity: Quantite::class, mappedBy: 'ingredient')]
+    private Collection $quantites;
 
-    #[ORM\ManyToOne(inversedBy: 'ingredient')]
-    private ?UniteDeMesure $uniteDeMesure = null;
+    #[ORM\OneToMany(targetEntity: RecetteIngredient::class, mappedBy: 'ingredient', cascade: ['persist', 'remove'])]
+    private $recetteIngredients;
 
     public function __construct()
     {
-        $this->recettes = new ArrayCollection();
+        $this->nom = new ArrayCollection();
+        $this->quantites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -65,41 +66,33 @@ class Ingredient
     }
 
     /**
-     * @return Collection<int, Recette>
+     * @return Collection<int, Quantite>
      */
-    public function getRecettes(): Collection
+    public function getQuantites(): Collection
     {
-        return $this->recettes;
+        return $this->quantites;
     }
 
-    public function addRecette(Recette $recette): static
+    public function addQuantite(Quantite $quantite): static
     {
-        if (!$this->recettes->contains($recette)) {
-            $this->recettes->add($recette);
-            $recette->addIngredient($this);
+        if (!$this->quantites->contains($quantite)) {
+            $this->quantites->add($quantite);
+            $quantite->setIngredient($this);
         }
 
         return $this;
     }
 
-    public function removeRecette(Recette $recette): static
+    public function removeQuantite(Quantite $quantite): static
     {
-        if ($this->recettes->removeElement($recette)) {
-            $recette->removeIngredient($this);
+        if ($this->quantites->removeElement($quantite)) {
+            // set the owning side to null (unless already changed)
+            if ($quantite->getIngredient() === $this) {
+                $quantite->setIngredient(null);
+            }
         }
 
         return $this;
     }
 
-    public function getUniteDeMesure(): ?UniteDeMesure
-    {
-        return $this->uniteDeMesure;
-    }
-
-    public function setUniteDeMesure(?UniteDeMesure $uniteDeMesure): static
-    {
-        $this->uniteDeMesure = $uniteDeMesure;
-
-        return $this;
-    }
 }

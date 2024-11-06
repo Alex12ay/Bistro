@@ -47,12 +47,6 @@ class Recette
     private Collection $categorie;
 
     /**
-     * @var Collection<int, Ingredient>
-     */
-    #[ORM\ManyToMany(targetEntity: Ingredient::class, inversedBy: 'recettes')]
-    private Collection $ingredient;
-
-    /**
      * @var Collection<int, Favoris>
      */
     #[ORM\OneToMany(targetEntity: Favoris::class, mappedBy: 'recette')]
@@ -79,14 +73,27 @@ class Recette
     #[ORM\ManyToOne(inversedBy: 'recette')]
     private ?Saison $saison = null;
 
+    /**
+     * @var Collection<int, Quantite>
+     */
+    #[ORM\OneToMany(targetEntity: Quantite::class, mappedBy: 'recette')]
+    private Collection $quantites;
+
+    /**
+     * @var Collection<int, Etapes>
+     */
+    #[ORM\OneToMany(targetEntity: Etapes::class, mappedBy: 'recette')]
+    private Collection $etapes;
+
     public function __construct()
     {
         $this->ustensile = new ArrayCollection();
         $this->categorie = new ArrayCollection();
-        $this->ingredient = new ArrayCollection();
         $this->favoris = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->quantites = new ArrayCollection();
+        $this->etapes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -215,30 +222,6 @@ class Recette
     }
 
     /**
-     * @return Collection<int, Ingredient>
-     */
-    public function getIngredient(): Collection
-    {
-        return $this->ingredient;
-    }
-
-    public function addIngredient(Ingredient $ingredient): static
-    {
-        if (!$this->ingredient->contains($ingredient)) {
-            $this->ingredient->add($ingredient);
-        }
-
-        return $this;
-    }
-
-    public function removeIngredient(Ingredient $ingredient): static
-    {
-        $this->ingredient->removeElement($ingredient);
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Favoris>
      */
     public function getFavoris(): Collection
@@ -360,4 +343,65 @@ class Recette
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Quantite>
+     */
+    public function getQuantites(): Collection
+    {
+        return $this->quantites;
+    }
+
+    public function addQuantite(Quantite $quantite): static
+    {
+        if (!$this->quantites->contains($quantite)) {
+            $this->quantites->add($quantite);
+            $quantite->setRecette($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuantite(Quantite $quantite): static
+    {
+        if ($this->quantites->removeElement($quantite)) {
+            // set the owning side to null (unless already changed)
+            if ($quantite->getRecette() === $this) {
+                $quantite->setRecette(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Etapes>
+     */
+    public function getEtapes(): Collection
+    {
+        return $this->etapes;
+    }
+
+    public function addEtape(Etapes $etape): static
+    {
+        if (!$this->etapes->contains($etape)) {
+            $this->etapes->add($etape);
+            $etape->setRecette($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEtape(Etapes $etape): static
+    {
+        if ($this->etapes->removeElement($etape)) {
+            // set the owning side to null (unless already changed)
+            if ($etape->getRecette() === $this) {
+                $etape->setRecette(null);
+            }
+        }
+
+        return $this;
+    }
+   
 }

@@ -19,14 +19,15 @@ class UniteDeMesure
     private ?string $nom = null;
 
     /**
-     * @var Collection<int, Ingredient>
+     * @var Collection<int, Quantite>
      */
-    #[ORM\OneToMany(targetEntity: Ingredient::class, mappedBy: 'uniteDeMesure')]
-    private Collection $ingredient;
+    #[ORM\OneToMany(targetEntity: Quantite::class, mappedBy: 'unite')]
+    private Collection $quantites;
 
     public function __construct()
     {
-        $this->ingredient = new ArrayCollection();
+        $this->nom = new ArrayCollection();
+        $this->quantites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -47,32 +48,36 @@ class UniteDeMesure
     }
 
     /**
-     * @return Collection<int, Ingredient>
+     * @return Collection<int, Quantite>
      */
-    public function getIngredient(): Collection
+    public function getQuantites(): Collection
     {
-        return $this->ingredient;
+        return $this->quantites;
     }
 
-    public function addIngredient(Ingredient $ingredient): static
+    public function addQuantite(Quantite $quantite): static
     {
-        if (!$this->ingredient->contains($ingredient)) {
-            $this->ingredient->add($ingredient);
-            $ingredient->setUniteDeMesure($this);
+        if (!$this->quantites->contains($quantite)) {
+            $this->quantites->add($quantite);
+            $quantite->setUnite($this);
         }
 
         return $this;
     }
 
-    public function removeIngredient(Ingredient $ingredient): static
+    public function removeQuantite(Quantite $quantite): static
     {
-        if ($this->ingredient->removeElement($ingredient)) {
+        if ($this->quantites->removeElement($quantite)) {
             // set the owning side to null (unless already changed)
-            if ($ingredient->getUniteDeMesure() === $this) {
-                $ingredient->setUniteDeMesure(null);
+            if ($quantite->getUnite() === $this) {
+                $quantite->setUnite(null);
             }
         }
 
         return $this;
+    }
+    public function __toString()
+    {
+        return $this->getNom();
     }
 }

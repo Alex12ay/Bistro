@@ -1,5 +1,5 @@
 body {
-    background-color: black;
+    background-color: rgb(255, 255, 255);
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -79,6 +79,7 @@ h2 {
     color: #cf4727;
     padding: 1em 2em;
     margin: 1em;
+    border-radius: 5px;
 }
 
 .buttonB:hover{
@@ -87,6 +88,7 @@ h2 {
     color: #333333;
     padding: 1em 2em;
     margin: 1em;
+    border-radius: 5px;
 }
 
 .bold {
@@ -98,7 +100,6 @@ h2 {
 /******************************************************************/
 .iconeIngredient{
     box-shadow: 10px 10px 5px rgb(92, 84, 84);
-    border: 1px solid rgba(128, 128, 128, 0.445);
     overflow: hidden;
     text-transform: capitalize;
 }

@@ -92,9 +92,9 @@
                 {% for ingredient in ingredients %}
                     <table>
                         <tr>
-                            <td><img src="{{ ingredient.thumbnail }}" class="ingredient-image" alt="image de {{ ingredient.nom }}"></img></td>
-                            <td>&nbsp;{{ ingredient.nom }}</td>
-                            <td> Quantité : </td>
+                            <td><img src="{{ ingredient.ingredient.thumbnail }}" class="ingredient-image" alt="image de {{ ingredient.ingredient.nom }}"></img></td>
+                            <td>&nbsp;{{ ingredient.ingredient.nom }}</td>
+                            <td> - Quantité : {{ ingredient.quantite}}{{ ingredient.unite}}</td>
                         </tr>
                     </table>
                 {% endfor %}
@@ -110,10 +110,16 @@
                 {% endfor %}
             </section>
             {# Section de la préparation #}
-            <div class="mb-3">
-                <h2>Préparation</h2>
-                <p>{{ recette.description }}</p>
-            </div> 
+             <h1>Étapes</h1>
+
+    <ul>
+        {% for etape in etapes %}
+            <li>{{ etape.nom }}</li> {# Utilisez les propriétés définies dans l'entité, comme "nom" ou "description" #}
+            <p>{{ etape.description }}</p>
+        {% endfor %}
+    </ul>
+            
+             </ul>
             {# Section des autres recettes de la même catégorie #}
             <section class="mb-3">
                 <h2>Autres recettes que vous pourriez aimer</h2>
@@ -123,9 +129,14 @@
                             
                             <img src="{{ recette.image }}" alt="" class="height100">
                             <a href="/recettes/{{recette.id}}"><h3>{{ recette.nom }}</h3></a>
-                            <p>{{ averageNotes[recette.id]|number_format(1) }}</p>  
+                            {% set note = averageNotes[recette.id] is defined ? averageNotes[recette.id] : 0 %}
+                            {% if note == 0 %}
+                                <p>Pas de note encore</p>
+                            {% else %}
+                                <p>{{note}}</p>
+                            
+                                        
                             <span class="toques-container">
-                                {% set note = averageNotes[recette.id] %}
                                     {% for i in 1..5 %}
                                         {% if i <= note %}
                                         <!-- Afficher la toque pleine -->
@@ -146,6 +157,7 @@
                                         {% endif %}
                                     {% endfor %}
                             </span>
+                           {% endif %}  
                         </div>
                     </div>
                 {% endfor %}
