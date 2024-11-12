@@ -25,7 +25,7 @@ class ChoiceUstensileType extends AbstractType
                 'placeholder' => 'Choisir des ustensiles',
             ])
            
-            ->add('submit', SubmitType::class)
+            ->add('Enregistrer_les_ustensiles', SubmitType::class)
         ;
     }
 
