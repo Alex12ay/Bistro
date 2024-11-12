@@ -64,6 +64,17 @@ class RecetteRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    public function getLastEtape($recette)
+{
+    return $this->createQueryBuilder('r')
+        ->leftJoin('r.etapes', 'e') 
+        ->where('r.id = :recetteId')
+        ->setParameter('recetteId', $recette->getId())
+        ->orderBy('e.etapes', 'DESC') // Trier par numéro d'étape décroissant
+        ->setMaxResults(1) // Récupérer seulement la dernière étape
+        ->getQuery()
+        ->getOneOrNullResult(); // Renvoie null si aucune étape
+}
 
     
 }

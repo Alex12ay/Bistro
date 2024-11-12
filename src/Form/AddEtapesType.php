@@ -1,8 +1,12 @@
 <?php
 
 namespace App\Form;
+
 use App\Entity\Etapes;
+use App\Entity\Recette;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -12,7 +16,10 @@ class AddEtapesType extends AbstractType
     {
         $builder
             ->add('description')
-            ->add('nom')
+            ->add('Ajouter_une_etape', SubmitType::class,
+            [
+                'attr' => ['class'=> 'buttonA']
+            ])
         ;
     }
 
