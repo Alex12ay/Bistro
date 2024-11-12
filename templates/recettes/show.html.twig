@@ -80,12 +80,18 @@
             
             <img src="\uploads\{{recette.image }}" alt="" class="width100">
             <div><small>Contributeur : {{ recette.idUser.pseudo }}</small></div>
+            
 
             <div class="d-flex p-2 gap-3">
                 <p>Temps : {{ recette.temps }} minutes.</p>
                 <p>Difficulté : {{ recette.difficulte.nom }}.</p>
                 <p>Budget : {{ recette.budget.nom }}.</p>
             </div>
+            {# Section de la préparation #}
+            <div class="mb-3">
+                <h2>Description</h2>
+                <p>{{ recette.description }}</p>
+            </div> 
             {# Section des ingrédients #}
             <section class="mb-3">
                 <h2>Ingrédients</h2>
@@ -109,10 +115,15 @@
                     </tr>
                 {% endfor %}
             </section>
-            {# Section de la préparation #}
+            {# Section des étapes #}
             <div class="mb-3">
-                <h2>Préparation</h2>
-                <p>{{ recette.description }}</p>
+                <h2>Préparation de la recette</h2>
+                {% for etape in etapes %}
+                    <div class="d-flex row">
+                        <h3>Etape {{etape.etapes}}</h3>
+                        <p>{{etape.description}}</p>
+                    </div>
+                {% endfor %}
             </div> 
             {# Section des autres recettes de la même catégorie #}
             <section class="mb-3">

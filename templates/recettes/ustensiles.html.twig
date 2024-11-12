@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<section class="container">
+    {{ form(formulaire)}}
+
+    {% for ust in ustensile %}
+        {{ust.nom}}
+    {% endfor %}
+    <a href="add/recettes/etapes"><button class="buttonA">>Ajouter les étapes</button</a>
+
+</section>
+   {{form_start(form)}}
+   {{form_widget(form)}}
+   <button>valider</button>
+   {{form_end(form)}}
+{% endblock %}

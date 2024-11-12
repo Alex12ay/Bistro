@@ -85,6 +85,12 @@ class Recette
     #[ORM\ManyToMany(targetEntity: Ingredient::class, mappedBy: 'recette')]
     private Collection $ingredients;
 
+    /**
+     * @var Collection<int, Etapes>
+     */
+    #[ORM\OneToMany(targetEntity: Etapes::class, mappedBy: 'recette')]
+    private Collection $etapes;
+
     public function __construct()
     {
         $this->ustensile = new ArrayCollection();
@@ -94,6 +100,7 @@ class Recette
         $this->tags = new ArrayCollection();
         $this->quantites = new ArrayCollection();
         $this->ingredients = new ArrayCollection();
+        $this->etapes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -396,6 +403,36 @@ class Recette
     {
         if ($this->ingredients->removeElement($ingredient)) {
             $ingredient->removeRecette($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Etapes>
+     */
+    public function getEtapes(): Collection
+    {
+        return $this->etapes;
+    }
+
+    public function addEtape(Etapes $etape): static
+    {
+        if (!$this->etapes->contains($etape)) {
+            $this->etapes->add($etape);
+            $etape->setRecette($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEtape(Etapes $etape): static
+    {
+        if ($this->etapes->removeElement($etape)) {
+            // set the owning side to null (unless already changed)
+            if ($etape->getRecette() === $this) {
+                $etape->setRecette(null);
+            }
         }
 
         return $this;

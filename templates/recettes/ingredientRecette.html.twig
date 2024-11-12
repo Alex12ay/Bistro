@@ -4,15 +4,16 @@
 {% block body %}
 <section class="container mt-3">
 {% for rec in recette %}
-    <h3 class='text-center'>Ingrédients pour: {{ rec.nom }}</h3>
+    <h3 class='text-center'>Ingrédients pour : {{ rec.nom }}</h3>
   {% endfor %}
   {{ form_start(formulaire)}}
     {{ form_widget(formulaire)}}
-      <button type="submit" class="btn btn-primary">Ajouter des étapes</button>
-       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Ajouter Un Ingrédient
-  </button>
+    <button type="button" class="buttonA" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Créer un ingrédient</button>
+      
+       
     {{ form_end(formulaire)}}
+    <a href="/add/recettes/ustensiles"><button type="submit" class="buttonB">Ajouter des ustensiles</button></a>
   {% for ing in ingredient %}
       <div>
           {{ing.quantite}}

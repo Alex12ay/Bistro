@@ -18,16 +18,18 @@ class QuantiteType extends AbstractType
     {
         
         $builder
-            ->add('quantite')
+            
             ->add('ingredient', EntityType::class, [
                 'class' => Ingredient::class,
                 'choices'=> $options['ingredientTrier'],
                 'choice_label' => 'nom',
             ])
+            ->add('quantite')
             ->add('unite', EntityType::class, [
                 'class' => UniteDeMesure::class,
                 'choice_label' => 'nom',
             ])
+            ->add('Enregistrer', SubmitType::class)
         ;
     }
 
