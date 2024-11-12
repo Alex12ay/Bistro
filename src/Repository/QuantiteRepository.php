@@ -29,11 +29,12 @@ class QuantiteRepository extends ServiceEntityRepository
             ;
         }
 
-    //    public function findOneBySomeField($value): ?Quantite
+    //    public function findIngredient($id): ?Quantite
     //    {
     //        return $this->createQueryBuilder('q')
-    //            ->andWhere('q.exampleField = :val')
-    //            ->setParameter('val', $value)
+    //            ->where('q.ingredient = :val')
+    //            ->where('q.recette = r')
+    //            ->setParameter('val', $id)
     //            ->getQuery()
     //            ->getOneOrNullResult()
     //        ;

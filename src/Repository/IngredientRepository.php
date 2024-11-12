@@ -19,13 +19,12 @@ class IngredientRepository extends ServiceEntityRepository
 //    /**
 //     * @return Ingredient[] Returns an array of Ingredient objects
 //     */
-//    public function findByExampleField($value): array
+//    public function findByIngredient($id): array
 //    {
 //        return $this->createQueryBuilder('i')
-//            ->andWhere('i.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('i.id', 'ASC')
-//            ->setMaxResults(10)
+//            ->leftJoin('i.recette' , ':r')
+//            ->where('r.ingredient = : val')
+//            ->setParameter('val', $id)
 //            ->getQuery()
 //            ->getResult()
 //        ;

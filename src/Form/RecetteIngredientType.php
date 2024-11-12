@@ -21,7 +21,6 @@ class RecetteIngredientType extends AbstractType
             ->add('unite', TextType::class);
         
     }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

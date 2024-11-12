@@ -27,14 +27,19 @@ class Ingredient
     #[ORM\OneToMany(targetEntity: Quantite::class, mappedBy: 'ingredient')]
     private Collection $quantites;
 
-    #[ORM\OneToMany(targetEntity: Recette::class, mappedBy: 'ingredient', cascade: ['persist', 'remove'])]
-    private Collection $recetteIngredients;
+
+    /**
+     * @var Collection<int, Recette>
+     */
+    #[ORM\ManyToMany(targetEntity: Recette::class, inversedBy: 'ingredients')]
+    private Collection $recette;
 
     public function __construct()
     {
         $this->nom = new ArrayCollection();
         $this->quantites = new ArrayCollection();
-        $this->recetteIngredients = new ArrayCollection();
+        $this->recette = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -124,6 +129,35 @@ class Ingredient
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Recette>
+     */
+    public function getRecette(): Collection
+    {
+        return $this->recette;
+    }
+
+    public function addRecette(Recette $recette): static
+    {
+        if (!$this->recette->contains($recette)) {
+            $this->recette->add($recette);
+        }
+
+        return $this;
+    }
+
+    public function removeRecette(Recette $recette): static
+    {
+        $this->recette->removeElement($recette);
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getNom();
     }
 
 

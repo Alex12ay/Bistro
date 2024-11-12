@@ -18,6 +18,7 @@
         {% for sai in global_saisons.getAllSaisons %}
             {% if date()|date('m/d') > (sai.datedebut|date('m/d')) and date()|date('m/d') < (sai.datefin|date('m/d')) %}
             <a href="/saison/show/{{sai.id}}"><img src="/{{sai.image}}" alt="{{sai.nom}}" class="imgSaison" title="Voir les recettes de saison"></a>
+
             {% endif %}
         {% endfor %}
         </div>

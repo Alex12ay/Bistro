@@ -146,12 +146,13 @@ class RecettesController extends AbstractController
     { 
         $saison = $sr->findAll();
         $budget = $br->findAll();
-        $ingredientId = $ing->find($id);
         $ingredient = $ing->findAll();
         $categorie = $cr->findAll();
+        $ingredientId = $ing->find($id);
         $ingredientName = $ingredientId-> getNom();
         $recette = $rr->findAll();
-        $targetRecette = $ingredientId->getRecetteIngredients();
+
+        $targetRecette = $rr->findByIngredient($ingredientName);
 
         foreach ($recette as $recette) {
             $commentaires = $cor->findBy(['recette' => $recette]);
@@ -174,8 +175,8 @@ class RecettesController extends AbstractController
             'ingredientName' => $ingredientName,
             'ingredientId' => $ingredientId,
             'targetRecette' => $targetRecette,
-            'averageNotes' => $averageNotes
-
+            'averageNotes' => $averageNotes,
+         
         ]);
     }
 
