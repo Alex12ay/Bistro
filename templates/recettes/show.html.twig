@@ -98,7 +98,7 @@
                 {% for ingredient in ingredients %}
                     <table>
                         <tr>
-                            <td><img src="{{ ingredient.ingredient.thumbnail }}" class="ingredient-image" alt="image de {{ ingredient.ingredient.nom }}"></img></td>
+                            <td><img src="/uploads/{{ ingredient.ingredient.thumbnail }}" class="ingredient-image" alt="image de {{ ingredient.ingredient.nom }}"></img></td>
                             <td>&nbsp;{{ ingredient.ingredient.nom }}</td>
                             <td> - Quantité : {{ ingredient.quantite}}{{ ingredient.unite}}</td>
                         </tr>
@@ -110,7 +110,7 @@
                 <h2>Ustensiles utilisés</h2>
                 {% for ustensile in ustensiles %}
                     <tr>
-                        <td><img src="\{{ustensile.image}}" class="ingredient-image" alt="image de {{ustensile.nom }}"></img></td>                        
+                        <td><img src="/uploads\{{ustensile.image}}" class="ingredient-image" alt="image de {{ustensile.nom }}"></img></td>                        
                         <td>{{ ustensile.nom }}</td><td> | </td>
                     </tr>
                 {% endfor %}
@@ -132,7 +132,7 @@
                     <div class="col">
                         <div class="card p-2 align-center">
                             
-                            <img src="{{ recette.image }}" alt="" class="height100">
+                            <img src="/uploads/{{ recette.image }}" alt="" class="height100">
                             <a href="/recettes/{{recette.id}}"><h3>{{ recette.nom }}</h3></a>
                             {% set note = averageNotes[recette.id] is defined ? averageNotes[recette.id] : 0 %}
                             {% if note == 0 %}

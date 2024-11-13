@@ -483,7 +483,7 @@ class RecettesController extends AbstractController
 
             if ($formulaire->isSubmitted() && $formulaire->isValid()) {
                 $newEtape = $formulaire->getData();
-                $newEtape -> setRecette($recette[0]);
+                $newEtape -> setRecette($recette);
                 $newEtape -> setEtapes($numeroEtape);               
                 $em->persist($newEtape);
                 $em->flush();
@@ -497,6 +497,7 @@ class RecettesController extends AbstractController
                     'form' => $formulaire->createView(),
                     'etape' => $derniereEtape,
                     'recette' => $recette,
+                    'numeroEtape' => $numeroEtape,
 
                 ]);
         }
