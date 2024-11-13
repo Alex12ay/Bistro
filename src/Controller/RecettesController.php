@@ -413,7 +413,7 @@ class RecettesController extends AbstractController
                 ]);
         }
         #[Route('/add/recettes/ustensiles', name: 'app_recette_add..')]
-        public function addU(Request $request,RecetteRepository $rr,EntityManagerInterface $em): Response
+        public function addU(Request $request,RecetteRepository $rr,EntityManagerInterface $em, SluggerInterface $slugger,#[Autowire('%kernel.project_dir%/public/uploads/')] string $uploadDirectory): Response
         {
             $recette = $rr->findOneBy([], ['id' => 'DESC']);
             $ustensile = $recette->getUstensile();
@@ -422,10 +422,29 @@ class RecettesController extends AbstractController
             
             $newUs = new Ustensile;
             $form = $this->createForm(AddUstensileType::class, $newUs);
+            $form -> handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+                 /** @var UploadedFile */
+                 $image = $form->get('image')->getData();
+                 if($image){
+                     $originalFileName = pathinfo($image->getClientOriginalName(),PATHINFO_FILENAME);
+                     $safeFilename = $slugger->slug($originalFileName);
+                     $newFileName = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
+ 
+                     try{
+                         $image->move($uploadDirectory, $newFileName);
+                     }catch(FileException $e){
+ 
+                     }
+                     $newUs->setImage($newFileName);
+                 }
+                
+                $newUs = $form->getData();
                 $em->persist($newUs);
                 $em->flush();
+
+                return $this->redirectToRoute('app_recette_add..');
             }
         
             if ($formulaire->isSubmitted() && $formulaire->isValid()) {
@@ -464,7 +483,7 @@ class RecettesController extends AbstractController
 
             if ($formulaire->isSubmitted() && $formulaire->isValid()) {
                 $newEtape = $formulaire->getData();
-                $newEtape -> setRecette($recette[0]);
+                $newEtape -> setRecette($recette);
                 $newEtape -> setEtapes($numeroEtape);               
                 $em->persist($newEtape);
                 $em->flush();
@@ -478,6 +497,7 @@ class RecettesController extends AbstractController
                     'form' => $formulaire->createView(),
                     'etape' => $derniereEtape,
                     'recette' => $recette,
+                    'numeroEtape' => $numeroEtape,
 
                 ]);
         }

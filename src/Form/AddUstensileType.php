@@ -6,6 +6,7 @@ use App\Entity\Recette;
 use App\Entity\Ustensile;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,7 +16,9 @@ class AddUstensileType extends AbstractType
     {
         $builder
             ->add('nom')
-           
+            ->add('image', FileType::class,[
+                'mapped' => false,
+            ])
         ;
     }
 
