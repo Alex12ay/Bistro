@@ -185,7 +185,7 @@ class RecettesController extends AbstractController
     }
 
     #[Route('/recettes/{id}', name: 'app_recettes_show')]
-    public function show(UserRepository $user, RecetteRepository $rr,QuantiteRepository $qr, CommentaireRepository $cor, CategorieRepository $cr, IngredientRepository $ing, SaisonRepository $sr, BudgetRepository $br, DifficulteRepository $dr, UstensileRepository $ur, FavorisRepository $fav, Request $request, EntityManagerInterface $entityManager, $id): Response
+    public function show(UserRepository $user, RecetteRepository $rr, CommentaireRepository $cor, CategorieRepository $cr, IngredientRepository $ing, SaisonRepository $sr, BudgetRepository $br, DifficulteRepository $dr, UstensileRepository $ur, FavorisRepository $fav, Request $request, EntityManagerInterface $entityManager, $id): Response
     { 
         $oneRec = $rr->find($id);
             if (!$oneRec) {
@@ -338,8 +338,8 @@ class RecettesController extends AbstractController
             return $this->render('recettes/add.html.twig', [
                 'form' => $form->createView(),
             ]);
-
         }
+
         #[Route('/error', name: 'app_error')]
         public function error(EntityManagerInterface $em): Response
         {   

@@ -35,7 +35,11 @@ class CommentaireType extends AbstractType
                     'max' => 5
                 ]
             ])
-            ->add('enregistrer', SubmitType::class)
+            ->add('enregistrer', SubmitType::class,[
+                "attr" => [
+                    'class' => "buttonA", 
+                ] 
+            ])
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {

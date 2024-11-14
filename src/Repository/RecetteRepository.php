@@ -16,9 +16,9 @@ class RecetteRepository extends ServiceEntityRepository
         parent::__construct($registry, Recette::class);
     }
 
-//    /**
-//     * @return Recette[] Returns an array of Recette objects
-//     */
+/**
+ * @return Recette[] Returns an array of Recette objects
+ */
    public function findByIngredient($nom): array
    {
        return $this->createQueryBuilder('r')
@@ -64,8 +64,9 @@ class RecetteRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    
     public function getLastEtape($recette)
-{
+    {
     return $this->createQueryBuilder('r')
         ->leftJoin('r.etapes', 'e') 
         ->where('r.id = :recetteId')
@@ -74,7 +75,5 @@ class RecetteRepository extends ServiceEntityRepository
         ->setMaxResults(1) // Récupérer seulement la dernière étape
         ->getQuery()
         ->getOneOrNullResult(); // Renvoie null si aucune étape
-}
-
-    
+    }
 }
